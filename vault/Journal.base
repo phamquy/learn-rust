@@ -1,0 +1,30 @@
+filters:
+  and:
+    - type == "journal"
+    - '!file.inFolder("Templates")'
+formulas:
+  week: if(note.date, note.date.format("GGGG-[W]WW"), "")
+properties:
+  formula.week:
+    displayName: ISO week
+views:
+  - type: table
+    name: Hours per week
+    groupBy:
+      property: formula.week
+      direction: DESC
+    order:
+      - date
+      - hours
+      - mood
+      - topics
+    summaries:
+      hours: Sum
+  - type: table
+    name: Recent
+    order:
+      - date
+      - hours
+      - mood
+      - topics
+    limit: 14

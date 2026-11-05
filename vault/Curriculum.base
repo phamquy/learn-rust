@@ -1,0 +1,64 @@
+filters:
+  and:
+    - type == "topic"
+formulas:
+  status_icon: if(status == "done", "✅", if(status == "in-progress", "🚧", "⬜"))
+  days_since_review: if(last_reviewed, (today() - last_reviewed).days, "")
+  needs_review: status == "done" && (!last_reviewed || (today() - last_reviewed).days > 14)
+properties:
+  formula.status_icon:
+    displayName: " "
+  formula.days_since_review:
+    displayName: Days since review
+  last_reviewed:
+    displayName: Last reviewed
+views:
+  - type: table
+    name: By phase
+    groupBy:
+      property: phase
+      direction: ASC
+    order:
+      - formula.status_icon
+      - file.name
+      - week
+      - status
+      - confidence
+      - hours
+      - crate
+    summaries:
+      hours: Sum
+      confidence: Average
+  - type: table
+    name: In progress
+    filters:
+      and:
+        - status == "in-progress"
+    order:
+      - file.name
+      - week
+      - confidence
+      - hours
+      - started
+  - type: table
+    name: Due for review
+    filters:
+      and:
+        - formula.needs_review == true
+    order:
+      - file.name
+      - confidence
+      - completed
+      - last_reviewed
+      - formula.days_since_review
+  - type: table
+    name: Weak spots (confidence 1-2)
+    filters:
+      and:
+        - status != "not-started"
+        - confidence < 3
+    order:
+      - file.name
+      - status
+      - confidence
+      - last_reviewed

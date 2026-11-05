@@ -1,0 +1,13 @@
+filters:
+  and:
+    - type == "project"
+    - '!file.inFolder("Templates")'
+views:
+  - type: cards
+    name: Projects
+    order:
+      - file.name
+      - status
+      - crate
+      - hours
+      - repo_link

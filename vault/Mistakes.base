@@ -1,0 +1,25 @@
+filters:
+  and:
+    - type == "mistake"
+    - '!file.inFolder("Templates")'
+views:
+  - type: table
+    name: Unresolved
+    filters:
+      and:
+        - resolved == false
+    order:
+      - file.name
+      - date
+      - topic
+      - error_code
+  - type: table
+    name: All, grouped by topic
+    groupBy:
+      property: topic
+      direction: ASC
+    order:
+      - file.name
+      - date
+      - error_code
+      - resolved

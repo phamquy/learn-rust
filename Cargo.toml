@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"
+publish = false
+
+[workspace.lints.rust]
+unused = "allow" # exercises start as stubs; tighten once you finish a crate
+
+[workspace.lints.clippy]
+all = "warn"
