@@ -1,5 +1,12 @@
 //! Topic: structs, enums, pattern matching.
 
+// use crate::structs_enums::{
+//     Command::{Add, Push},
+//     Shape::Circle,
+// };
+
+use std::f64::consts::PI;
+
 #[derive(Debug, PartialEq)]
 pub enum Shape {
     Circle(f64),
@@ -8,7 +15,10 @@ pub enum Shape {
 
 impl Shape {
     pub fn area(&self) -> f64 {
-        todo!()
+        match self {
+            Shape::Circle(r) => PI * r,
+            Shape::Rect { w, h } => w * h,
+        }
     }
 }
 
@@ -21,7 +31,21 @@ pub enum Command {
 
 /// Parse "push 3", "pop", "add". Anything else (including a bad number) is None.
 pub fn parse_command(input: &str) -> Option<Command> {
-    todo!()
+    let mut words = input.split_whitespace();
+    let cmd = match words.next()? {
+        "push" => {
+            let n = words.next()?.parse::<i32>().ok()?;
+            Command::Push(n)
+        }
+        "pop" => Command::Pop,
+        "add" => Command::Add,
+        _ => return None,
+    };
+
+    if words.next().is_some() {
+        return None;
+    }
+    Some(cmd)
 }
 
 #[cfg(test)]

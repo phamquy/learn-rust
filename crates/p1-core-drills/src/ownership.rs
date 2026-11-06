@@ -2,22 +2,38 @@
 
 /// Return whichever string is longer. Ties return `a`. Takes ownership of both.
 pub fn longest_owned(a: String, b: String) -> String {
-    todo!()
+    if a.len() >= b.len() {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+pub fn test_longest_owned() {
+    let a = String::from("string a");
+    let b = String::from("string b");
+
+    let c = longest_owned(a, b);
 }
 
 /// Return the first whitespace-delimited word, or "" if none. Must not allocate.
 pub fn first_word(s: &str) -> &str {
-    todo!()
+    if let Some(w) = s.split_whitespace().next() {
+        return w;
+    }
+    return &"";
 }
 
 /// Push `x` onto `v` and return it. Takes ownership, no clone.
 pub fn push_and_return(v: Vec<i32>, x: i32) -> Vec<i32> {
-    todo!()
+    let mut v = v;
+    v.push(x);
+    v
 }
 
 /// Double every element in place through a mutable borrow.
 pub fn double_in_place(v: &mut [i32]) {
-    todo!()
+    v.iter_mut().for_each(|x| *x *= 2);
 }
 
 #[cfg(test)]

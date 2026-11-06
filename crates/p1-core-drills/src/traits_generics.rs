@@ -8,25 +8,38 @@ pub trait Describe {
 // i32 -> "int:5", String -> "str:hi", Vec<T> -> "[int:1, int:2]"
 impl Describe for i32 {
     fn describe(&self) -> String {
-        todo!()
+        format!("int:{self}")
     }
 }
 
 impl Describe for String {
     fn describe(&self) -> String {
-        todo!()
+        format!("str:{self}")
     }
 }
 
+// Vec<T> -> "[int:1, int:2]"
 impl<T: Describe> Describe for Vec<T> {
     fn describe(&self) -> String {
-        todo!()
+        let parts: Vec<String> = self.iter().map(|x| x.describe()).collect();
+        format!("[{}]", parts.join(", "))
     }
 }
 
 /// Largest element, None if empty.
 pub fn largest<T: PartialOrd + Copy>(items: &[T]) -> Option<T> {
-    todo!()
+    if items.is_empty() {
+        return None;
+    }
+
+    let mut largest_idx: usize = 0;
+    for i in 0..items.len() {
+        if items[i] > items[largest_idx] {
+            largest_idx = i;
+        }
+    }
+
+    Some(items[largest_idx])
 }
 
 /// Describe every item through a trait object.
