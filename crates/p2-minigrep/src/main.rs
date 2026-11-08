@@ -6,6 +6,19 @@ fn main() {
         eprintln!("{e}");
         process::exit(2);
     });
-    // TODO: read the file, run search, print matches; exit 1 on I/O error.
-    let _ = (config, fs::read_to_string("/dev/null"));
+
+    let contents = match fs::read_to_string(&config.path) {
+        Ok(c) => c,
+        Err(_) => process::exit(1),
+    };
+
+    let results = if config.ignore_case {
+        p2_minigrep::search_case_insensitive(&config.query, &contents)
+    } else {
+        p2_minigrep::search(&config.query, &contents)
+    };
+    
+    for line in results {
+        println!("{line}");
+    }
 }

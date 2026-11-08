@@ -26,3 +26,5 @@ rustc-ice-*.txt
 # Obsidian per-machine state (keep the vault content, drop workspace layout)
 vault/.obsidian/workspace*.json
 vault/.obsidian/cache
+/.idea/
+.DS_Store
