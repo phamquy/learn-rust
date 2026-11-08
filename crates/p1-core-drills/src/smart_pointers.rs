@@ -11,13 +11,16 @@ pub enum List {
 impl List {
     /// Sum of all elements. Recursion over the Box is fine.
     pub fn sum(&self) -> i32 {
-        todo!()
+        match self {
+            List::Cons(value, next) => value + next.sum(),
+            List::Nil => 0,
+        }
     }
 }
 
 /// Increment the shared counter by one.
 pub fn increment(counter: &Rc<RefCell<i32>>) {
-    todo!()
+    counter.replace_with(|v| *v + 1);
 }
 
 /// Records its name into a shared log when dropped.
@@ -27,7 +30,11 @@ pub struct Guard {
 }
 
 // TODO: impl Drop for Guard that pushes `self.name` into `self.log`
-
+impl Drop for Guard {
+    fn drop(&mut self) {
+        self.log.borrow_mut().push(self.name);
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

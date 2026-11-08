@@ -42,9 +42,15 @@ pub fn largest<T: PartialOrd + Copy>(items: &[T]) -> Option<T> {
     Some(items[largest_idx])
 }
 
+pub fn largest_short<T: PartialOrd + Copy>(items: &[T]) -> Option<T> {
+    let mut iter = items.iter().copied();
+    let first = iter.next()?;
+    Some(iter.fold(first, |max, x| if x > max { x } else { max }))
+}
+
 /// Describe every item through a trait object.
 pub fn describe_all(items: &[Box<dyn Describe>]) -> Vec<String> {
-    todo!()
+    items.iter().map(|x| x.describe()).collect()
 }
 
 #[cfg(test)]
@@ -53,9 +59,9 @@ mod tests {
 
     #[test]
     fn largest_works() {
-        assert_eq!(largest(&[1, 5, 2]), Some(5));
-        assert_eq!(largest(&[1.5, 0.2]), Some(1.5));
-        assert_eq!(largest::<i32>(&[]), None);
+        assert_eq!(largest_short(&[1, 5, 2]), Some(5));
+        assert_eq!(largest_short(&[1.5, 0.2]), Some(1.5));
+        assert_eq!(largest_short::<i32>(&[]), None);
     }
 
     #[test]

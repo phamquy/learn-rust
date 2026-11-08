@@ -3,9 +3,9 @@
 //! Run one module: `cargo test -p p1-core-drills collections`
 pub mod collections;
 pub mod errors;
+pub mod lifetimes;
 pub mod ownership;
 pub mod structs_enums;
 pub mod traits_generics;
-// pub mod lifetimes;
-// pub mod iterators;
-// pub mod smart_pointers;
+pub mod iterators;
+pub mod smart_pointers;

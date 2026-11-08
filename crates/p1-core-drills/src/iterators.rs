@@ -2,17 +2,17 @@
 
 /// Sum of squares of the even numbers. One iterator chain, no loops.
 pub fn sum_of_even_squares(v: &[i32]) -> i32 {
-    todo!()
+    v.iter().filter(|&&x| x % 2 == 0).map(|&x| x * x).sum()
 }
 
 /// Lengths of the words, skipping empty ones.
 pub fn word_lengths(words: &[&str]) -> Vec<usize> {
-    todo!()
+    words.iter().filter(|&&w| !w.is_empty()).map(|&w| w.len()).collect()
 }
 
 /// Returns a closure that adds `n` to its argument.
 pub fn make_adder(n: i32) -> impl Fn(i32) -> i32 {
-    move |x| todo!()
+    move |x| x + n
 }
 
 /// Fibonacci sequence 0, 1, 1, 2, 3, 5, ...
@@ -30,7 +30,10 @@ impl Fib {
 impl Iterator for Fib {
     type Item = u64;
     fn next(&mut self) -> Option<u64> {
-        todo!()
+        let current = self.a;
+        self.a = self.b;
+        self.b = current + self.b;
+        Some(current)
     }
 }
 
