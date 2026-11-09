@@ -12,19 +12,27 @@ pub struct Task {
 #[derive(Debug, Default)]
 pub struct TodoList {
     tasks: Vec<Task>,
+    last_id: u32,
 }
 
 impl TodoList {
     pub fn add(&mut self, title: &str) -> u32 {
-        todo!()
+        let id = self.last_id;
+        self.last_id += 1;
+        self.tasks.push(Task {id, title: title.to_string(), done: false});
+        id
     }
 
     pub fn complete(&mut self, id: u32) -> Result<(), String> {
-        todo!()
+        self.tasks.iter_mut().find(|t| t.id == id)
+            .map(|t| t.done = true)
+            .ok_or_else(|| format!("Task with id {} not found", id))
     }
 
     pub fn remove(&mut self, id: u32) -> Result<Task, String> {
-        todo!()
+        self.tasks.iter().position(|t| t.id == id)
+            .map(|idx| self.tasks.remove(idx))
+            .ok_or_else(|| format!("Task with id {} not found", id))
     }
 
     pub fn tasks(&self) -> &[Task] {
@@ -32,11 +40,28 @@ impl TodoList {
     }
 
     pub fn serialize(&self) -> String {
-        todo!()
+        // serde_json::to_string(&self.tasks).unwrap()
+        self.tasks.iter()
+                .map(|t| format!("[{}] {}", if t.done { "x" } else { " " }, t.title))
+                .collect::<Vec<_>>()
+                .join("\n") 
     }
 
     pub fn deserialize(s: &str) -> Result<Self, String> {
-        todo!()
+        // let tasks: Vec<Task> = serde_json::from_str(s).map_err(|e| e.to_string())?;
+        // let last_id = tasks.iter().map(|t| t.id).max().unwrap_or(0) + 1;
+        // Ok(TodoList { tasks, last_id })
+        let mut tasks = Vec::new();
+        let mut last_id = 0;
+        for line in s.lines() {
+            if let Some((done, title)) = line.split_once("] ") {
+                let done = done == "[x";
+                let id = last_id;
+                last_id += 1;
+                tasks.push(Task { id, title: title.to_string(), done });
+            }
+        }
+        Ok(TodoList { tasks, last_id })
     }
 }
 
